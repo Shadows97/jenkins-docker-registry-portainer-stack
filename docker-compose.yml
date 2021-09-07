@@ -1,9 +1,7 @@
 version: "3.9"
 services:
   jenkins:
-    image: jenkins/jenkins:lts
-    privileged: true
-    user: root
+    image: registry.dev.internet.bj/internet-bj-jenkins:private
     ports:
       - 8081:8080
       - 50000:50000
@@ -11,7 +9,6 @@ services:
     volumes:
       - jekins-data:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/local/bin/docker:/usr/local/bin/docker
     networks:
       - internet_bj
     deploy:
@@ -21,7 +18,7 @@ services:
         condition: always
 
 
-registry:
+  registry:
     image: registry:2
     container_name: registry
     deploy:
@@ -41,22 +38,6 @@ registry:
       - ./auth:/auth
     networks:
       - internet_bj
-
-
-  # nginx:
-  #   image: nginx:alpine
-  #   container_name: nginx
-  #   restart: unless-stopped
-  #   tty: true
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   volumes:
-  #     - ./nginx/conf.d/:/etc/nginx/conf.d/
-  #     - ./nginx/ssl/:/etc/nginx/ssl/
-  #   networks:
-  #     - internet_bj
-
 volumes:
   registrydata:
     driver: local
