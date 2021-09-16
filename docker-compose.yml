@@ -5,10 +5,12 @@ services:
     ports:
       - 8081:8080
       - 50000:50000
-    container_name: jenkins
     volumes:
-      - jekins-data:/var/jenkins_home
+      - ./data:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes/:/var/lib/docker/volumes/
+    environment:
+      - JENKINS_HOME=/var/jenkins_home
     networks:
       - internet_bj
     deploy:
