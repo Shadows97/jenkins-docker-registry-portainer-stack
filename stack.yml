@@ -1,0 +1,47 @@
+version: "3.9"
+services:
+  jenkins:
+    image: registry.dev.internet.bj/internet-bj-jenkins:private
+    ports:
+      - 8081:8080
+      - 50000:50000
+    container_name: jenkins
+    volumes:
+      - ./data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes/:/var/lib/docker/volumes/
+    environment:
+      - JENKINS_HOME=/var/jenkins_home
+      - BIND_HOME=./data
+    networks:
+      - internet_bj
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+
+  registry:
+    image: registry:2
+    container_name: registry
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+    - "5000:5000"
+    environment:
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry-Realm
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.passwd
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+    volumes:
+      - ./registrydata:/data
+      - ./auth:/auth
+    networks:
+      - internet_bj
+networks:
+  internet_bj:
+    driver: overlay
