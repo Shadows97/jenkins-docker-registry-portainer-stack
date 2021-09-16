@@ -18,7 +18,7 @@ htpasswd -Bcb registry.passwd admin admin
 
 # docker network create --driver overlay --attachable internet_bj
 cd ..
-docker build -t registry.dev.internet.bj/internet-bj-jenkins:private .
+docker build -t registry.dev.internet.bj/internet-bj-jenkins:private $(pwd)/Dockerfile
 
 docker stack deploy -c stack.yml global
 
