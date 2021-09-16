@@ -14,7 +14,7 @@ mkdir jenkins_data
 
 mkdir auth && cd auth
 apt install -y apache2-utils certbot python3-certbot-nginx
-htpasswd -Bc registry.passwd admin admin
+htpasswd -Bcb registry.passwd admin admin
 
 # docker network create --driver overlay --attachable internet_bj
 cd ..
