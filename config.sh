@@ -14,6 +14,7 @@ chmod 777 -R registry_data/
 mkdir -p jenkins_data
 chmod 777 -R jenkins_data/
 
+# Creation d'un fichier d'authentification pour le registry
 mkdir auth
 apt install -y apache2-utils certbot python3-certbot-nginx
 htpasswd -Bcb registry.passwd admin admin
